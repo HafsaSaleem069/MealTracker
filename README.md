@@ -1,15 +1,15 @@
-# 🍽️ MealTracker – Restaurant Web Application
+#  MealTracker – Restaurant Web Application
 
 **MealTracker** is a full-stack restaurant website built using **Node.js**, **Express**, **EJS**, and **MongoDB**.  
 It is designed for a single restaurant to manage its food menu, customer orders, and administrative tasks.
 
 ---
 
-## 📌 Project Overview
+##  Project Overview
 
 MealTracker offers two main interfaces:
 
-### 👥 Customer Side
+###  Customer Side
 - Browse food items (Pizza, Coffee, Desi, Desserts, etc.)
 - Register and login
 - Add items to cart
@@ -17,7 +17,7 @@ MealTracker offers two main interfaces:
 - Receive order notifications
 - Fully responsive design
 
-### 🛠️ Admin Panel
+###  Admin Panel
 - Add, edit, and delete food products
 - Manage customer orders and mark them as delivered
 - View and manage user data
@@ -26,7 +26,7 @@ MealTracker offers two main interfaces:
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 - **public/** — Static files (CSS, JS, images)
 - **views/** — EJS templates
@@ -40,7 +40,7 @@ MealTracker offers two main interfaces:
 
 ---
 
-## ⚙️ Requirements
+##  Requirements
 
 To run this project locally, you need:
 
@@ -50,7 +50,7 @@ To run this project locally, you need:
 
 ---
 
-## 🚀 Getting Started
+##  Setup
 
 Clone the repo and install dependencies:
 
