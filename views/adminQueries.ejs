@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Queries</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Trebuchet MS', sans-serif;
+            background-color: black;
+            color: #ffffff;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 30%;
+            background-color: black;
+            border-right: 1px solid #333;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 3px 0 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #252525;
+            border: 2px solid rgb(64, 63, 63);
+            cursor: pointer;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, background-color 0.3s;
+        }
+
+        .sidebar li:hover {
+            background-color: #373737;
+            transform: scale(1.05);
+        }
+
+        .sidebar li strong {
+            color: #f0ad4e;
+            font-size: 1rem;
+        }
+
+        .sidebar li small {
+            color: #bbbbbb;
+            font-size: 0.85rem;
+        }
+
+        /* Chat area styles */
+        .chat-area {
+            width: 70%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            background-color: black;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .chat-area h3 {
+            margin: 0 0 20px;
+            font-size: 1.5rem;
+            color: #f0ad4e;
+            border-bottom: 2px solid #403d3d;
+            /* Add border */
+            padding-bottom: 30px;
+            /* Add spacing between text and line */
+
+        }
+
+        #chatArea {
+            height: calc(100vh - 140px);
+            overflow-y: auto;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 10px;
+            background-color: #202020;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Chat message styles */
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 75%;
+            /* Limit the maximum width of messages */
+            display: inline-block;
+            /* Make the width adapt to content */
+            transition: transform 0.2s;
+            word-wrap: break-word;
+            /* Handle long words or URLs */
+            overflow-wrap: break-word;
+        }
+
+        .message:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-message {
+            background-color: black;
+            text-align: left;
+            float: left;
+            /* Align user messages to the left */
+            clear: both;
+            /* Prevent overlapping with previous messages */
+        }
+
+        .admin-message {
+            background-color: #f0ad4e;
+            transform: translateY(-3px);
+            box-shadow: 0px 5px 15px rgba(112, 81, 36, 0.4);
+            color: black;
+            text-align: right;
+            float: right;
+            /* Align admin messages to the right */
+            clear: both;
+            /* Prevent overlapping with previous messages */
+        }
+
+
+        .message strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .message small {
+            font-size: 0.8rem;
+            color: #746f6f;
+        }
+
+        /* Input area styles */
+        input[type="text"] {
+            width: calc(100% - 90px);
+            padding: 15px;
+            margin-top: 10px;
+            border: 1px solid #333;
+            border-radius: 10px;
+            background-color: #2a2a2a;
+            color: #fff;
+            margin-right: 10px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #f0ad4e;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: #f0ad4e;
+            box-shadow: 0px 5px 15px rgba(255, 189, 90, 0.4);
+            color: black;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #d47c00;
+            transform: scale(1.05);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #f0ad4e;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #333;
+        }
+
+        /* Add animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <ul>
+            <% users.forEach(user=> { %>
+                <li class="fade-in" onclick="fetchUserChat('<%= user.userId %>')">
+                    <strong>
+                        <%= user.userName || 'Unknown User' %>
+                    </strong>
+                    <small>
+                        <%= user.latestQuery || 'No latest query' %>
+                    </small>
+                </li>
+                <% }) %>
+        </ul>
+    </div>
+
+    <div class="chat-area">
+        <div id="chatArea">
+            <!-- Chat messages will be appended here -->
+        </div>
+        <div>
+            <input type="text" id="responseInput" placeholder="Type your response here..." />
+            <button onclick="sendResponse()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        let currentUserId;
+        let currentQueryIndex;
+
+        async function fetchUserChat(userId) {
+            currentUserId = userId;
+            const res = await fetch(`http://localhost:3000/admin/queries/${userId}`);
+            const { userName, queries } = await res.json();
+
+            const chatArea = document.getElementById('chatArea');
+            chatArea.innerHTML = `<h3>${userName || 'Unknown User'}</h3>`;
+            queries.forEach((query, index) => {
+                chatArea.innerHTML += `<div class="message user-message"><strong>${userName}:</strong> ${query.queryText} <small>(${new Date(query.queryDate).toLocaleString()})</small></div>`;
+                if (query.response) {
+                    chatArea.innerHTML += `<div class="message admin-message"><strong>Admin:</strong> ${query.response} <small>(${new Date(query.responseDate).toLocaleString()})</small></div>`;
+                } else {
+                    chatArea.innerHTML += `<div class="message admin-message"><button onclick="setCurrentQueryIndex(${index})">Respond</button></div>`;
+                }
+            });
+        }
+
+        function setCurrentQueryIndex(index) {
+            currentQueryIndex = index;
+            document.getElementById('responseInput').focus();
+        }
+
+        async function sendResponse() {
+            if (currentQueryIndex === undefined) return alert('Select a query to respond to.');
+
+            const responseText = document.getElementById('responseInput').value;
+            const res = await fetch('/admin/queries/respond', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: currentUserId, queryIndex: currentQueryIndex, responseText })
+            });
+
+            if (res.ok) {
+                document.getElementById('responseInput').value = '';
+                fetchUserChat(currentUserId); // Refresh chat
+            } else {
+                alert('Failed to send response.');
+            }
+        }
+    </script>
+</body>
+
+</html>

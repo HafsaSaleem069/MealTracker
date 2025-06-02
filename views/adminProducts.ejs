@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Products</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Global Styles */
+        * {
+            /* font-family: 'poppins', sans-serif; */
+            font-family: 'Trebuchet MS', sans-serif;
+
+        }
+
+        body {
+            /* background: linear-gradient(135deg, #1a1a2e, #16213e); */
+            background-color: black;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            /* Enable flexbox */
+            justify-content: center;
+            /* Center horizontally */
+            align-items: center;
+            /* Center vertically */
+            min-height: 100vh;
+            /* Ensure the body takes full height */
+        }
+
+        .container {
+            margin: 40px auto;
+            font-size: 0.9rem;
+            padding: 0px 20px;
+            background: #2a2a2a;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(216, 198, 163, 0.749);
+            width: 100%;
+            /* Responsive width */
+            max-width: 90%;
+            /* Prevent the container from becoming too wide */
+
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-align: center;
+            padding-top: 30px;
+            margin: 20px 0;
+            color: #f0ad4e;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+        }
+
+        tbody tr {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        tbody tr:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        th,
+        td {
+            padding: 20px 20px;
+            text-align: left;
+            font-weight: 900;
+        }
+
+        th {
+            background-color: #f0ad4e;
+            box-shadow: 0px 5px 15px rgba(240, 173, 78, 0.4);
+            /* border-radius: 500px; */
+            /* Header Row Color */
+            color: #121212;
+            /* Dark Text */
+            font-weight: bold;
+            text-transform: uppercase;
+            /* margin: 50px 20px; */
+        }
+
+        table tbody tr {
+            /* background-color: 252526; */
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-bottom: 3px solid rgb(91, 90, 88)
+        }
+
+        table tbody tr:hover {
+            transform: scale(1.02);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        table tbody td {
+            /* border-bottom: 1px solid #444; */
+            color: #ffffff;
+        }
+
+        .addProduct,
+        .dropdown-toggle,
+        .deletebtn {
+            background-color: #2a2a2a;
+            border: 1px solid #f0ad4e;
+            color: #f0ad4e;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .addProduct:hover,
+        .dropdown-toggle:hover,
+        .deletebtn:hover {
+            background: #f0ad4e;
+            color: #2a2a2a;
+            transform: translateY(-3px);
+            box-shadow: 0px 5px 15px rgba(240, 173, 78, 0.4);
+
+        }
+
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #f0ad4e;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .product-image:hover {
+            transform: scale(1.1);
+        }
+
+        .btn {
+            border-radius: 30px;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #f0ad4e;
+            color: white;
+        }
+
+        .dropdown-menu {
+            background-color: #2a2a2a;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .pagination .page-link {
+            background-color: #2a2a2a;
+            border: 1px solid #f0ad4e;
+            color: #f0ad4e;
+            border-radius: 30px;
+            transition: background 0.3s ease;
+        }
+
+        .pagination .page-link:hover {
+            background: #f0ad4e;
+            color: white;
+        }
+
+        .toggle-form {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #2a2a2a;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            animation: slideDown 0.5s ease forwards;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        /* Style for all form inputs */
+        .form-control {
+            background-color: #2a2a2a;
+            border: 1px solid #f0ad4e;
+            /* Thicker default border */
+            color: white;
+            border-radius: 10px;
+            padding: 10px 15px;
+            transition: all 0.3s ease;
+            /* Smooth transition for hover and focus effects */
+        }
+
+        /* Highlight border on focus */
+        .form-control:focus {
+            border: 3px solid #f0ad4e;
+            /* Thicker border on focus */
+            box-shadow: 0px 5px 15px rgba(240, 173, 78, 0.2);
+            /* Glow effect */
+            background-color: #121212;
+            color: #ffffff;
+            /* Optional: Change background slightly */
+        }
+
+        /* Style for file input */
+        input[type="file"] {
+            background-color: #2a2a2a;
+            color: #f0ad4e;
+            border: 2px solid #f0ad4e;
+            border-radius: 10px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Change border and color when file input is focused or clicked */
+        input[type="file"]:focus,
+        input[type="file"]:hover {
+            border: 3px solid #f0ad4e;
+            background-color: #121212;
+            color: #ffffff;
+            /* Optional: Change text color when focused */
+            box-shadow: 0 0 10px rgba(240, 173, 78, 0.6);
+            /* Glow effect */
+        }
+
+        /* Customize the "Choose File" button */
+        input[type="file"]::-webkit-file-upload-button {
+            background-color: #f0ad4e;
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        /* Hover effect for the "Choose File" button */
+        input[type="file"]::-webkit-file-upload-button:hover {
+            background-color: #2a2a2a;
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(240, 173, 78, 0.6);
+            /* Optional: Slight bounce effect */
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 5px #f0ad4e;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-toggle::after {
+            content: '\25BC';
+            margin-left: 10px;
+            font-size: 0.8rem;
+        }
+        #filter{
+            width: auto;
+        }
+        .filter-label {
+            margin-right: 10px;
+            /* Space between the label and dropdown */
+            color: #f0ad4e;
+            /* Label color */
+            font-weight: bold;
+            /* Bold label text */
+        }
+
+        .filter-select {
+            width: 180px;
+            /* Adjust width for a more compact look */
+            border: 1px solid #f0ad4e;
+            /* Border color */
+            border-radius: 10px;
+            /* Rounded corners */
+            background-color: #2a2a2a;
+            /* Background color */
+            color: #f0ad4e;
+            /* Font color */
+            transition: border 0.3s ease;
+            /* Smooth border transition */
+        }
+
+        .filter-select:hover,
+        .filter-select:focus {
+            border: 2px solid #f0ad4e;
+            /* Change border on hover and focus */
+        }
+    </style>
+    <script>
+        function toggleForm() {
+            const form = document.getElementById('productForm');
+            form.style.display = form.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Product Management</h2>
+        <!-- Category Filter -->
+        <div class="d-flex justify-content-end mt-4" id="filter">
+            <form action="/admin/products" method="GET" class="d-flex align-items-center">
+                <select name="category" class="form-control filter-select" onchange="this.form.submit()">
+                    <option value="">All Categories</option>
+                    <% categories.forEach(category=> { %>
+                        <option value="<%= category %>" <%=category===selectedCategory ? 'selected' : '' %>><%= category
+                                %>
+                        </option>
+                        <% }) %>
+                </select>
+                <i class="fas fa-chevron-down ms-2" style="color: #f0ad4e;"></i>
+            </form>
+        </div>
+
+
+        <div class="dropdown mb-4">
+            <button class="dropdown-toggle" onclick="toggleForm()">
+                Add Product
+            </button>
+        </div>
+
+        <div id="productForm" class="toggle-form">
+            <form action="/admin/adminProducts/add" method="POST" enctype="multipart/form-data">
+                <div class="form-group mb-3">
+                    <label for="name">Product Name</label>
+                    <input type="text" name="name" id="name" class="form-control" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="category">Category</label>
+                    <input type="text" name="category" id="category" class="form-control" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="image">Image</label>
+                    <input type="file" name="image" id="image" class="form-control" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" class="form-control"></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="price">Price</label>
+                    <input type="number" name="price" id="price" class="form-control" required step="0.01">
+                </div>
+                <button type="submit" class="addProduct">Add Product</button>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% products.forEach((product,index)=> { %>
+                    <tr>
+                        <td style="font-size: 1.5rem; color: #f0ad4e;">
+                            <span>#</span>
+                            <%= index + 1 %>
+                        </td>
+                        <td><img src="<%= product.image %>" alt="<%= product.name %>" class="product-image"></td>
+                        <td><strong>
+                                <%= product.name %>
+                            </strong></td>
+                        <td>
+                            <%= product.description.length> 40 ? product.description.substring(0, 40) + '...' :
+                                product.description %>
+                        </td>
+                        <td>
+                            <%= product.price.toFixed(2) %>/-
+                        </td>
+                        <td>
+                            <form action="/admin/products/delete/<%= product._id %>" method="POST"
+                                style="display:inline;">
+                                <button type="submit" class="deletebtn">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

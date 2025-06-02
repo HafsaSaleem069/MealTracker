@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Dark Theme</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            /* font-family: 'poppins', sans-serif; */
+            font-family: 'Trebuchet MS', sans-serif;
+            background: #1b1b1b;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            color: #f0f0f0;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #2a2a2a;
+            position: fixed;
+            height: 100vh;
+            padding: 2rem 1rem;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5), -5px -5px 15px rgba(50, 50, 50, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar h2 {
+            font-size: 1rem;
+            color: #f0f0f0;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            font-size: 0.9rem;
+            color: #f8b960;
+            padding: 0.9rem;
+            display: block;
+            margin-bottom: 2.5rem;
+            border-radius: 50px;
+            text-align: center;
+            box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.3), inset -5px -5px 10px rgba(50, 50, 50, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background: #f0ad4e;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0px 5px 15px rgba(240, 173, 78, 0.4);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .dashboard-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: #f0f0f0;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .dashboard-grid {
+            margin-left: 15%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Card Styling */
+        .card {
+            background-color: #1e1e1e;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .card h2 {
+            color: #f0ad4e;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Neon Progress Circle */
+        .progress-circle {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1rem;
+        }
+
+        /* Circle Glow Effect */
+        .progress-circle .circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(#f0ad4e calc(var(--progress) * 1deg),
+                    #333 calc(var(--progress) * 1deg));
+            box-shadow: 0 0 15px rgba(247, 139, 45, 0.7), 0 0 30px rgba(247, 139, 45, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .progress-circle::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: calc(100% - 20px);
+            height: calc(100% - 20px);
+            background-color: #121212;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* Percentage Text Inside Circle */
+        .progress-circle span {
+            position: relative;
+            z-index: 2;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f0ad4e;
+            text-shadow: 0 0 10px rgba(237, 181, 76, 0.8), 0 0 20px rgba(255, 205, 96, 0.893);
+        }
+
+        /* Amount and Details */
+        .card .amount {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        .card .target {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Button Styling */
+        .card button {
+            background-color: transparent;
+            border: 2px solid #f0ad4e;
+            color: #f0ad4e;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card button:hover {
+            background-color: #f0ad4e;
+            color: #fff;
+            box-shadow: 0 0 10px rgb(240, 166, 101), 0 0 20px rgba(251, 185, 128, 0.96);
+        }
+
+        /* Animation for Filling Progress */
+        @keyframes fillProgress {
+            from {
+                --progress: 0;
+            }
+
+            to {
+                --progress: 252;
+                /* Adjust for % completion (252° = 70%) */
+            }
+        }
+
+        .progress-circle {
+            animation: fillProgress 2s ease-in-out forwards;
+        }
+
+        .dashboard-card {
+            background: #2a2a2a;
+            border-radius: 20px;
+            height: 350px;
+            padding: 1.5rem;
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.4), -10px -10px 20px rgba(50, 50, 50, 0.2);
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.6), -15px -15px 30px rgba(50, 50, 50, 0.3);
+        }
+
+        .dashboard-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #f0f0f0;
+        }
+
+        .dashboard-card h4 a {
+            text-decoration: none;
+        }
+
+        .dashboard-card p {
+            font-size: 1rem;
+            color: #aaa;
+        }
+    </style>
+</head>
+
+
+</html>
+
+</style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Admin Dashboard</h2>
+        <a href="http://localhost:3000/admin/users">Customers</a>
+        <a href="http://localhost:3000/admin/orders">Orders</a>
+        <a href="http://localhost:3000/admin/products">Products</a>
+        <a href="http://localhost:3000/admin/category">Categories</a>
+        <a href="http://localhost:3000/admin/queries">Queries</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="dashboard-title">Admin Dashboard Overview</h1>
+        <div class="dashboard-grid">
+            <!-- Card 1 -->
+            <div class="dashboard-card">
+                <div class="progress-circle" style="--progress: 70;">
+                    <div class="circle">
+                        <span>100K/-</span>
+                    </div>
+                </div>
+                <h4><a href="/" style="color: #f0f0f0;">Monthly Sales</a></h4>
+                <p style="font-size: 1.4rem;color: #f8b960;">100,000 PKR</p>
+            </div>
+            <!-- Card 1 -->
+            <div class="dashboard-card">
+                <div class="progress-circle" style="--progress: 70;">
+                    <div class="circle">
+                        <span>70%</span>
+                    </div>
+                </div>
+                <h4><a href="http://localhost:3000/admin/users" style="color: #f0f0f0;">Customers</a></h4>
+                <p>Manage registered users and their details.</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="dashboard-card">
+                <div class="progress-circle" style="--progress: 85;">
+                    <div class="circle">
+                        <span>85%</span>
+                    </div>
+                </div>
+                <h4><a href="http://localhost:3000/admin/orders" style="color: #f0f0f0;">Orders</a></h4>
+                <p>View and update orders placed by customers.</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="dashboard-card">
+                <div class="progress-circle" style="--progress: 50;">
+                    <div class="circle">
+                        <span>50%</span>
+                    </div>
+                </div>
+                <h4><a href="http://localhost:3000/admin/products" style="color: #f0f0f0;">Products</a></h4>
+                <p>Manage the list of available products.</p>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="dashboard-card">
+                <div class="progress-circle" style="--progress: 40;">
+                    <div class="circle">
+                        <span>40%</span>
+                    </div>
+                </div>
+                <h4><a href="http://localhost:3000/admin/category" style="color: #f0f0f0;">Categories</a></h4>
+                <p>Organize products into categories.</p>
+            </div>
+
+
+            <!-- Card 6 -->
+            <div class="dashboard-card">
+                <div class="progress-circle" style="--progress: 60;">
+                    <div class="circle">
+                        <span>60%</span>
+                    </div>
+                </div>
+                <h4><a href="http://localhost:3000/admin/queries" style="color: #f0f0f0;">Queries</a></h4>
+                <p>Manage customer queries and feedback.</p>
+            </div>
+
+
+        </div>
+    </div>
+</body>
+
+</html>

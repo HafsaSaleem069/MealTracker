@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Data</title>
+</head>
+<body>
+    <h1>Sales Data</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Image</th>
+                <th>Total Sold</th>
+                <th>Total Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% salesData.forEach(product => { %>
+                <tr>
+                    <td><%= product.name %></td>
+                    <td><img src="<%= product.image %>" alt="<%= product.name %>" width="100"></td>
+                    <td><%= product.totalSold %></td>
+                    <td><%= product.totalRevenue.toFixed(2) %> PKR</td> <!-- Assuming PKR as currency -->
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

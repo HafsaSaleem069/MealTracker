@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegant Notifications</title>
+    <style>
+        /* Global Styles */
+        body {
+            background-color: #0f0f0f;
+            color: #f0f0f0;
+            font-family: 'Trebuchet MS', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            /* align-items: center; */
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Container Styles */
+        .container {
+            width: 90%;
+            max-width: 70%;
+            background: linear-gradient(145deg, #1a1a1a, #121212);
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px rgba(112, 112, 109, 0.749);
+            padding: 20px 30px;
+            margin: 30px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Title Styles */
+        h1 {
+            text-align: center;
+            color: #ffc857;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* List Styles */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            background: #1f1f1f;
+            color: #e8e8e8;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin: 10px 30;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4), -2px -2px 10px rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+        }
+
+        li:hover {
+            transform: translateY(-5px) scale(1.02);
+            background: linear-gradient(145deg, #2a2a2a, #191919);
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.6), -5px -5px 15px rgba(255, 255, 255, 0.05);
+        }
+
+        /* Read Notification */
+        .read {
+            opacity: 0.6;
+        }
+
+        /* Unread Notification */
+        .unread {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        /* Date Styles */
+        small {
+            font-size: 0.8rem;
+            color: #aaaaaa;
+            text-align: right;
+        }
+
+        /* No Notifications Styles */
+        p {
+            text-align: center;
+            color: #bbbbbb;
+            font-style: italic;
+            margin: 0;
+        }
+
+        /* Keyframes for Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Notifications</h1>
+        <% if (notifications.length> 0) { %>
+            <ul>
+                <% notifications.forEach(notification=> { %>
+                    <li class="<%= notification.isRead ? 'read' : 'unread' %>">
+                        <span>
+                            <%= notification.message %>
+                        </span>
+                        <small>
+                            <%= notification.createdAt.toLocaleString() %>
+                        </small>
+                    </li>
+                    <% }); %>
+            </ul>
+            <% } else { %>
+                <p>No notifications available</p>
+                <% } %>
+    </div>
+</body>
+
+</html>
