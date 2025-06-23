@@ -323,6 +323,23 @@ router.patch('/cart/items', userSessionMiddleware, async (req, res) => {
         res.status(500).json({ message: "Error updating cart items", error: error.message });
     }
 });
+
+// Example controller
+router.get('/notification/counter', async (req, res) => {
+    const userId = req.user._id;
+
+    // Get unseen notifications count
+    const unreadCount = await Notification.countDocuments({ userId, isRead: false });
+
+    // Get total items in cart
+    const userCart = await Cart.findOne({ userId });
+    let cartCount = 0;
+    if (userCart && userCart.products.length) {
+        cartCount = userCart.products.reduce((sum, item) => sum + item.quantity, 0);
+    }
+
+    res.render("home", { user: req.user, cartCount, unreadCount });
+});
 // Route to delete an item from the cart
 router.delete('/cart/items', userSessionMiddleware, async (req, res) => {
     const { name } = req.body; // Get the item name from the request body
