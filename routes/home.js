@@ -2,14 +2,40 @@ const express = require('express');
 const router = express.Router();
 const userSessionMiddleware = require("../middlewares/site-middleware");
 const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client("832761851712-kubtp813vs6b7iledisqok9mrqdnn31v.apps.googleusercontent.com"); // replace this
-const bcrypt = require('bcrypt');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID); // ✅ from envconst bcrypt = require('bcrypt');
 const { User, Product, Cart, Order, Notification, Query } = require('../models/usersModel');
+const optionalMiddleware = require('../middlewares/optional-middleware');
 // Home Page Route
-router.get('/', userSessionMiddleware,
-    async (req, res) => {
-        res.render("home", { user: res.locals.user });
-    });
+// router.get('/', async (req, res) => {
+//     try {
+//         const user = req.user; // Or wherever you're storing authenticated user data
+
+//         if (!user) {
+//             return res.status(401).send('User not logged in');
+//         }
+
+//         res.render('home', { user });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).send('Server Error');
+//     }
+// });
+// Home Page Route
+router.get('/', async (req, res) => {
+    try {
+        // The 'user' object will be available on req.user if a user is logged in
+        // (assuming your userSessionMiddleware correctly populates req.user).
+        // If no user is logged in, req.user will be null or undefined.
+        const user = req.user;
+
+        // Always render the 'home' template, passing the 'user' object.
+        // The EJS template will handle showing/hiding elements based on 'user' existence.
+        res.render('home', { user });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
 router.get('/navbar', userSessionMiddleware,
     async (req, res) => {
         res.render("navbar", { user: res.locals.user });

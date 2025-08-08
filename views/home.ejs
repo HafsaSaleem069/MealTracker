@@ -875,13 +875,16 @@
             crossorigin="anonymous"></script>
 
         <script>
-            const userId = '<%= user._id %>'; // Injected from server-side using EJS or set this dynamically
+            // Conditionally set userId based on whether the 'user' object exists
+            const userId = '<%= user ? user._id : "" %>'; // If user exists, use user._id, otherwise use an empty string
+            // OR, if your chat system allows guest users and needs a unique ID for them:
+            // const userId = '<%= user ? user._id : "guest_" + Math.random().toString(36).substring(2) %>';
+
             const chatButton = document.getElementById('chatButton');
             const chatWindow = document.getElementById('chatWindow');
             const chatMessages = document.getElementById('chatMessages');
             const chatInput = document.getElementById('chatInput');
             const sendButton = document.getElementById('sendButton');
-
             let cachedResponses = [];
             let isTyping = false;
             let lastResponseCount = 0;
